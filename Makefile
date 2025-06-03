@@ -3,7 +3,7 @@ BUILD := go build -v -ldflags "-s -w -X main.Version=$(VERSION)"
 
 BINARY = check_fritz
 
-.PHONY : all clean build test
+.PHONY : all clean build test build-full
 
 all: build test
 
@@ -14,6 +14,10 @@ clean:
 	rm -rf build/
 
 build:
+	mkdir -p build
+	GOOS=linux GOARCH=amd64 $(BUILD) -o build/$(BINARY) ./cmd/check_fritz
+
+build-full:
 	mkdir -p build
 	GOOS=linux GOARCH=amd64 $(BUILD) -o build/$(BINARY).linux.amd64 ./cmd/check_fritz
 	GOOS=linux GOARCH=arm64 $(BUILD) -o build/$(BINARY).linux.arm64 ./cmd/check_fritz
