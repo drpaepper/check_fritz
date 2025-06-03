@@ -208,7 +208,7 @@ func UnmarshalSoapResponse(resp TR064Response, inputXML [][]byte) error {
 // ProcessSoapResponse handles the SOAP response from channels
 func ProcessSoapResponse(resps chan []byte, errs chan error, count int, timeout int) ([][]byte, error) {
 	results := make([][]byte, 0)
-
+outer:
 	for {
 		timedout := false
 
@@ -222,10 +222,10 @@ func ProcessSoapResponse(resps chan []byte, errs chan error, count int, timeout 
 			results = append(results, res)
 
 			if count <= 0 {
-				break
+				break outer
 			}
 		case <-time.After(time.Duration(timeout) * time.Second):
-			return nil, fmt.Errorf("Ran into a timeout after %d seconds", timeout)
+			return nil, fmt.Errorf("ran into a timeout after %d seconds", timeout)
 		}
 
 		if count <= 0 || timedout {

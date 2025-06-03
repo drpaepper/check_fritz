@@ -5,7 +5,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -29,7 +29,7 @@ func DoSoapRequest(soapRequest *SoapData, resps chan<- []byte, errs chan<- error
 		return
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 
 	if err != nil {
 		errs <- err
@@ -57,7 +57,7 @@ func DoSoapRequest(soapRequest *SoapData, resps chan<- []byte, errs chan<- error
 			errs <- err
 			return
 		} else if authHeader == "" {
-			errs <- errors.New("Returned authentication header is empty")
+			errs <- errors.New("returned authentication header is empty")
 			return
 		}
 		req.Header.Set("Authorization", authHeader)
@@ -66,7 +66,7 @@ func DoSoapRequest(soapRequest *SoapData, resps chan<- []byte, errs chan<- error
 		resps <- body
 		return
 	} else {
-		errs <- fmt.Errorf("Unexpected response status code: %d", resp.StatusCode)
+		errs <- fmt.Errorf("unexpected response status code: %d", resp.StatusCode)
 	}
 
 	// second request is now authenticated
@@ -78,14 +78,14 @@ func DoSoapRequest(soapRequest *SoapData, resps chan<- []byte, errs chan<- error
 	}
 
 	if resp.StatusCode == http.StatusUnauthorized {
-		errs <- errors.New("Unauthorized: wrong username or password")
+		errs <- errors.New("unauthorized: wrong username or password")
 		return
 	} else if resp.StatusCode != http.StatusOK {
-		errs <- fmt.Errorf("Unexpected response status code: %d", resp.StatusCode)
+		errs <- fmt.Errorf("unexpected response status code: %d", resp.StatusCode)
 		return
 	}
 
-	body, err = ioutil.ReadAll(resp.Body)
+	body, err = io.ReadAll(resp.Body)
 
 	if err != nil {
 		errs <- err
@@ -132,11 +132,9 @@ func newSoapRequestBody(soapRequest *SoapData) []byte {
 	request.WriteString("<s:Body>")
 	request.WriteString("<u:" + soapRequest.Action + " xmlns:u='urn:dslforum-org:service:" + soapRequest.Service + ":1'>")
 
-	if &soapRequest.XMLVariable != nil {
-		request.WriteString("<" + soapRequest.XMLVariable.Name + ">")
-		request.WriteString(soapRequest.XMLVariable.Value)
-		request.WriteString("</" + soapRequest.XMLVariable.Name + ">")
-	}
+	request.WriteString("<" + soapRequest.XMLVariable.Name + ">")
+	request.WriteString(soapRequest.XMLVariable.Value)
+	request.WriteString("</" + soapRequest.XMLVariable.Name + ">")
 
 	request.WriteString("</u:" + soapRequest.Action + ">")
 	request.WriteString("</s:Body>")
