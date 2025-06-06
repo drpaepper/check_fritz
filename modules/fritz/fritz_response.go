@@ -192,6 +192,16 @@ type WANDSLInterfaceGetInfoResponse struct {
 	NewDownstreamPower       string `xml:"Body>GetInfoResponse>NewDownstreamPower"`
 }
 
+type WANCommonInterfaceGetActiveProvider struct {
+	TR064Response
+	NewProvider string `xml:"Body>X_AVM-DE_GetActiveProviderResponse>NewX_AVM-DE_Provider"`
+}
+
+type WLANTotalAssociations struct {
+	TR064Response
+	NewTotalAssociations string `xml:"Body>GetTotalAssociationsResponse>NewTotalAssociations"`
+}
+
 // UnmarshalSoapResponse unmarshals the soap response to the data structure
 func UnmarshalSoapResponse(resp TR064Response, inputXML [][]byte) error {
 	for i := range inputXML {
