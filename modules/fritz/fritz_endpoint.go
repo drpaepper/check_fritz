@@ -69,3 +69,17 @@ var HomeAutoDeviceInfo = Endpoint{
 	serviceIndex: "1",
 	action:       "GetSpecificDeviceInfos",
 }
+
+var WANCommonActiveProvider = Endpoint{
+	url:          "/upnp/control/wancommonifconfig1",
+	service:      "WANCommonInterfaceConfig",
+	serviceIndex: "1",
+	action:       "X_AVM-DE_GetActiveProvider",
+}
+
+var WLANConfigurationTotalAssociations = Endpoint{
+	url:          "/upnp/control/wlanconfig2",
+	service:      "WLANConfiguration",
+	serviceIndex: "2",
+	action:       "GetTotalAssociations",
+}
