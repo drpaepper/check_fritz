@@ -24,7 +24,7 @@ func (soapData *SoapData) AddSoapDataVariable(soapDataVariable SoapDataVariable)
 }
 
 // CreateNewSoapData creates a new FritzSoapRequest structure
-func CreateNewSoapData(username string, password string, hostname string, port string, e endpoint) SoapData {
+func CreateNewSoapData(username string, password string, hostname string, port string, e Endpoint) SoapData {
 	var fSR SoapData
 
 	fSR.URL = "https://" + hostname + ":" + port + e.url
