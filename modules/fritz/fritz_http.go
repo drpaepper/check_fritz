@@ -119,7 +119,7 @@ func newSoapRequest(soapRequest *SoapData) (*http.Request, error) {
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "text/xml; charset='utf-8'")
-	req.Header.Set("SoapAction", "urn:dslforum-org:service:"+soapRequest.Service+":1#"+soapRequest.Action)
+	req.Header.Set("SoapAction", "urn:dslforum-org:service:"+soapRequest.Service+":"+soapRequest.ServiceIndex+"#"+soapRequest.Action)
 
 	return req, nil
 }
@@ -130,7 +130,7 @@ func newSoapRequestBody(soapRequest *SoapData) []byte {
 	request.WriteString("<?xml version='1.0?>")
 	request.WriteString("<s:Envelope xmlns:s='http://schemas.xmlsoap.org/soap/envelope/' s:encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'>")
 	request.WriteString("<s:Body>")
-	request.WriteString("<u:" + soapRequest.Action + " xmlns:u='urn:dslforum-org:service:" + soapRequest.Service + ":1'>")
+	request.WriteString("<u:" + soapRequest.Action + " xmlns:u='urn:dslforum-org:service:" + soapRequest.Service + ":" + soapRequest.ServiceIndex + "'>")
 
 	request.WriteString("<" + soapRequest.XMLVariable.Name + ">")
 	request.WriteString(soapRequest.XMLVariable.Value)
