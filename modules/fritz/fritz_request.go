@@ -12,6 +12,13 @@ type SoapData struct {
 	XMLVariable  SoapDataVariable
 }
 
+type FritzServerCredentials struct {
+	Username  string
+	Password  string
+	URL       string
+	TR064Port string
+}
+
 // SoapDataVariable is the data structure for a variable that can injected in the SOAP request
 type SoapDataVariable struct {
 	Name  string
@@ -47,4 +54,15 @@ func CreateNewSoapVariable(name string, value string) SoapDataVariable {
 	soapDataVariable.Value = value
 
 	return soapDataVariable
+}
+
+func GetDataFromEndpoint(s FritzServerCredentials, e Endpoint) [][]byte {
+	resps := make(chan []byte)
+	errs := make(chan error)
+
+	soapReq := CreateNewSoapData(s.Username, s.Password, s.URL, s.TR064Port, e)
+	go DoSoapRequest(&soapReq, resps, errs, false)
+
+	resp, _ := ProcessSoapResponse(resps, errs, 1, 30)
+	return resp
 }
