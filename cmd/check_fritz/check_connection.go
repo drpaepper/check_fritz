@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mcktr/check_fritz/modules/fritz"
-	"github.com/mcktr/check_fritz/modules/perfdata"
+	"github.com/drpaepper/check_fritz/modules/fritz"
+	"github.com/drpaepper/check_fritz/modules/perfdata"
 )
 
 // CheckConnectionStatus checks the internet connection status
@@ -20,9 +20,9 @@ func CheckConnectionStatus(aI ArgumentInformation) {
 
 	switch modelgroup {
 	case "dsl":
-		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wanpppconn1", "WANPPPConnection", "GetInfo")
+		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.WANPPPConnectionInfo)
 	case "cable":
-		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wanipconnection1", "WanIPConnection", "GetInfo")
+		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.WANIPConnectionInfo)
 	default:
 		fmt.Printf("UNKNOWN - Fritz!Box modelgroup '%s' is unknown. Supported modelgroups are: DSL, CABLE\n", modelgroup)
 		GlobalReturnCode = exitUnknown
@@ -84,9 +84,9 @@ func CheckConnectionUptime(aI ArgumentInformation) {
 
 	switch modelgroup {
 	case "dsl":
-		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wanpppconn1", "WANPPPConnection", "GetInfo")
+		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.WANPPPConnectionInfo)
 	case "cable":
-		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wanipconnection1", "WanIPConnection", "GetInfo")
+		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.WANIPConnectionInfo)
 	default:
 		fmt.Printf("UNKNOWN - Fritz!Box modelgroup '%s' is unknown. Supported modelgroups are: DSL, CABLE\n", modelgroup)
 		GlobalReturnCode = exitUnknown

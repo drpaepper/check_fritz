@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mcktr/check_fritz/modules/fritz"
-	"github.com/mcktr/check_fritz/modules/perfdata"
-	"github.com/mcktr/check_fritz/modules/thresholds"
+	"github.com/drpaepper/check_fritz/modules/fritz"
+	"github.com/drpaepper/check_fritz/modules/perfdata"
+	"github.com/drpaepper/check_fritz/modules/thresholds"
 )
 
 // CheckDownstreamMax checks the maximum downstream that is available on this internet connection
@@ -24,9 +24,9 @@ func CheckDownstreamMax(aI ArgumentInformation) {
 	}
 
 	if isDSL {
-		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wandslifconfig1", "WANDSLInterfaceConfig", "GetInfo")
+		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.DSLConnectionInfo)
 	} else {
-		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wancommonifconfig1", "WANCommonInterfaceConfig", "GetCommonLinkProperties")
+		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.WANCommonLinkProperties)
 	}
 
 	go fritz.DoSoapRequest(&soapReq, resps, errs, aI.Debug)
@@ -112,7 +112,7 @@ func CheckDownstreamCurrent(aI ArgumentInformation) {
 	resps := make(chan []byte)
 	errs := make(chan error)
 
-	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wancommonifconfig1", "WANCommonInterfaceConfig", "X_AVM-DE_GetOnlineMonitor")
+	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.WANCommonOnlineMonitor)
 	soapReq.AddSoapDataVariable(fritz.CreateNewSoapVariable("NewSyncGroupIndex", "0"))
 	go fritz.DoSoapRequest(&soapReq, resps, errs, aI.Debug)
 
@@ -175,7 +175,7 @@ func CheckDownstreamUsage(aI ArgumentInformation) {
 	resps := make(chan []byte)
 	errs := make(chan error)
 
-	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wancommonifconfig1", "WANCommonInterfaceConfig", "X_AVM-DE_GetOnlineMonitor")
+	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.WANCommonOnlineMonitor)
 	soapReq.AddSoapDataVariable(fritz.CreateNewSoapVariable("NewSyncGroupIndex", "0"))
 	go fritz.DoSoapRequest(&soapReq, resps, errs, aI.Debug)
 
@@ -203,9 +203,9 @@ func CheckDownstreamUsage(aI ArgumentInformation) {
 	}
 
 	if isDSL {
-		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wandslifconfig1", "WANDSLInterfaceConfig", "GetInfo")
+		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.DSLConnectionInfo)
 	} else {
-		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/wancommonifconfig1", "WANCommonInterfaceConfig", "GetCommonLinkProperties")
+		soapReq = fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.WANCommonLinkProperties)
 	}
 
 	go fritz.DoSoapRequest(&soapReq, resps, errs, aI.Debug)

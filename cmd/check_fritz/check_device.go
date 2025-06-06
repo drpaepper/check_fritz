@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/mcktr/check_fritz/modules/fritz"
-	"github.com/mcktr/check_fritz/modules/perfdata"
+	"github.com/drpaepper/check_fritz/modules/fritz"
+	"github.com/drpaepper/check_fritz/modules/perfdata"
 )
 
 // CheckDeviceUptime checks the uptime of the device
@@ -13,7 +13,7 @@ func CheckDeviceUptime(aI ArgumentInformation) {
 	resps := make(chan []byte)
 	errs := make(chan error)
 
-	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/deviceinfo", "DeviceInfo", "GetInfo")
+	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.DeviceInfo)
 	go fritz.DoSoapRequest(&soapReq, resps, errs, aI.Debug)
 
 	res, err := fritz.ProcessSoapResponse(resps, errs, 1, *aI.Timeout)
@@ -54,7 +54,7 @@ func CheckDeviceUpdate(aI ArgumentInformation) {
 	resps := make(chan []byte)
 	errs := make(chan error)
 
-	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/userif", "UserInterface", "GetInfo")
+	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.UserInterfaceInfo)
 	go fritz.DoSoapRequest(&soapReq, resps, errs, aI.Debug)
 
 	res, err := fritz.ProcessSoapResponse(resps, errs, 1, *aI.Timeout)

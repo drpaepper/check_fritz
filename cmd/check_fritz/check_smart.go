@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/mcktr/check_fritz/modules/fritz"
-	"github.com/mcktr/check_fritz/modules/perfdata"
-	"github.com/mcktr/check_fritz/modules/thresholds"
+	"github.com/drpaepper/check_fritz/modules/fritz"
+	"github.com/drpaepper/check_fritz/modules/perfdata"
+	"github.com/drpaepper/check_fritz/modules/thresholds"
 )
 
 // CheckSpecificSmartStatus checks the connection status of a smart device
@@ -14,7 +14,7 @@ func CheckSpecificSmartStatus(aI ArgumentInformation) {
 	resps := make(chan []byte)
 	errs := make(chan error)
 
-	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/x_homeauto", "X_AVM-DE_Homeauto", "GetSpecificDeviceInfos")
+	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.HomeAutoDeviceInfo)
 
 	if aI.InputVariable == nil {
 		fmt.Printf("UNKNOWN - a AIN needs to be set for this check method\n")
@@ -63,7 +63,7 @@ func CheckSpecificSmartHeaterTemperatur(aI ArgumentInformation) {
 	resps := make(chan []byte)
 	errs := make(chan error)
 
-	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/x_homeauto", "X_AVM-DE_Homeauto", "GetSpecificDeviceInfos")
+	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.HomeAutoDeviceInfo)
 
 	if aI.InputVariable == nil {
 		fmt.Printf("UNKNOWN - a AIN needs to be set for this check method\n")
@@ -140,7 +140,7 @@ func CheckSpecificSmartSocketPower(aI ArgumentInformation) {
 	resps := make(chan []byte)
 	errs := make(chan error)
 
-	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/x_homeauto", "X_AVM-DE_Homeauto", "GetSpecificDeviceInfos")
+	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.HomeAutoDeviceInfo)
 
 	if aI.InputVariable == nil {
 		fmt.Printf("UNKNOWN - a AIN needs to be set for this check method\n")
@@ -211,7 +211,7 @@ func CheckSpecificSmartSocketEnergy(aI ArgumentInformation) {
 	resps := make(chan []byte)
 	errs := make(chan error)
 
-	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, "/upnp/control/x_homeauto", "X_AVM-DE_Homeauto", "GetSpecificDeviceInfos")
+	soapReq := fritz.CreateNewSoapData(*aI.Username, *aI.Password, *aI.Hostname, *aI.Port, fritz.HomeAutoDeviceInfo)
 
 	if aI.InputVariable == nil {
 		fmt.Printf("UNKNOWN - a AIN needs to be set for this check method\n")

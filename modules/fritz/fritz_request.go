@@ -2,13 +2,14 @@ package fritz
 
 // SoapData is the data structure for a SOAP request including the response
 type SoapData struct {
-	Username    []byte
-	Password    []byte
-	URL         string
-	URLPath     string
-	Action      string
-	Service     string
-	XMLVariable SoapDataVariable
+	Username     []byte
+	Password     []byte
+	URL          string
+	URLPath      string
+	Action       string
+	Service      string
+	ServiceIndex string
+	XMLVariable  SoapDataVariable
 }
 
 // SoapDataVariable is the data structure for a variable that can injected in the SOAP request
@@ -23,16 +24,17 @@ func (soapData *SoapData) AddSoapDataVariable(soapDataVariable SoapDataVariable)
 }
 
 // CreateNewSoapData creates a new FritzSoapRequest structure
-func CreateNewSoapData(username string, password string, hostname string, port string, urlpath string, service string, action string) SoapData {
+func CreateNewSoapData(username string, password string, hostname string, port string, e endpoint) SoapData {
 	var fSR SoapData
 
-	fSR.URL = "https://" + hostname + ":" + port + urlpath
+	fSR.URL = "https://" + hostname + ":" + port + e.url
 
-	fSR.URLPath = urlpath
+	fSR.URLPath = e.url
 	fSR.Username = []byte(username)
 	fSR.Password = []byte(password)
-	fSR.Action = action
-	fSR.Service = service
+	fSR.Action = e.action
+	fSR.Service = e.service
+	fSR.ServiceIndex = e.serviceIndex
 
 	return fSR
 }
